@@ -8,7 +8,7 @@ import entities.CustomerFactory;
 import java.util.*;
 import util.DataInput;
 import util.Datavalidation;
-import CustomerService.CustomerService;
+import service.CustomerService;
 /**
  *
  * @author Thanh Dat
