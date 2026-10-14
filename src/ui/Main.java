@@ -1,8 +1,8 @@
 package ui;
 import java.util.*;
 import util.DataInput;
-import CustomerService.CustomerService;
-import CustomerService.CustomerServiceImpl;
+import service.CustomerService;
+import service.CustomerServiceImpl;
 import repository.Customerrepository;
 import repository.Customerrepositoryimpl;
 
