@@ -52,7 +52,7 @@ public abstract class Customer {
     }
     
     public static boolean isValidPhone(String phone) {
-    return phone != null && phone.matches("0\\d{9,10}|\\+84\\{9,10}$");
+    return phone != null && phone.matches("0\\d{9,10}|\\+84\\d{9,10}$");
 }
 
     public void setPhone(String phone) {
