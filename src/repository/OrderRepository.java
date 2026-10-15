@@ -1,13 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package repository;
 
+import entities.Order;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
- * @author admin
+ * OrderRepository class handles the storage and retrieval of Order objects.
  */
 public class OrderRepository {
-    
+    // Private attributes (Chấm đỏ)
+    private List<Order> orders;
+
+    // Public methods (Chấm xanh)
+    public OrderRepository() {
+        this.orders = new ArrayList<>();
+    }
+
+    public void saveOrder(Order order) {
+        if (order != null) {
+            orders.add(order);
+        }
+    }
+
+    public List<Order> findAll() {
+        return this.orders;
+    }
+
+    public Order findById(String id) {
+        for (Order order : orders) {
+            if (order.getTransactionId().equalsIgnoreCase(id)) {
+                return order;
+            }
+        }
+        return null;
+    }
 }
