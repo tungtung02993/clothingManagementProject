@@ -18,10 +18,12 @@ import service.ProductServiceImpl;
 import service.ReportService;
 import service.SalesService;
 import util.DataInput;
+import repository.FileOrderDataSource;
 
 public class Main {
     private static final String CUSTOMER_FILE = "customers.txt";
     private static final String PRODUCT_FILE = "products.txt";
+    private static final String ORDER_FILE = "orders.txt";
 
     private final CustomerService customerService;
     private final ProductService productService;
@@ -30,6 +32,7 @@ public class Main {
     private final OrderRepository orderRepository;
     private final SalesService salesService;
     private final ReportService reportService;
+    private final FileOrderDataSource fileOrderDataSource;
 
     private Main(CustomerService customerService, ProductRepository productRepository,
                  ProductService productService,
@@ -39,6 +42,7 @@ public class Main {
         this.customers = new customerManagement(customerService);
         this.products = new ProductManagement(productService);
         this.orderRepository = orderRepository;
+        this.fileOrderDataSource = new FileOrderDataSource(ORDER_FILE);
         this.salesService = new SalesService(productRepository, orderRepository);
         this.reportService = new ReportService(orderRepository, productRepository);
     }
@@ -344,13 +348,14 @@ public class Main {
             addMore = DataInput.getString("Add another product? (Y/N): ")
                     .trim().equalsIgnoreCase("Y");
         }
-
-        if (salesService.confirmSale(order)) {
-            productService.saveProductsToFile();
-            System.out.printf("Subtotal: %.2f | Discount: %.2f | Total: %.2f%n",
-                    order.calculateSubtotal(), order.calculateDiscount(),
-                    order.calculateFinalAmount());
-        }
+        
+            if (salesService.confirmSale(order)) {
+                productService.saveProductsToFile();
+                fileOrderDataSource.writeOrders(orderRepository.findAll());
+                System.out.printf("Subtotal: %.2f | Discount: %.2f | Total: %.2f%n",
+                                  order.calculateSubtotal(), order.calculateDiscount(),
+                                  order.calculateFinalAmount());
+            }
     }
 
     private void printSales() {
