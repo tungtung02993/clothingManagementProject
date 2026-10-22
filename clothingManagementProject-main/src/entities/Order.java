@@ -118,6 +118,6 @@ public class Order {
         completed = true;
     }
     public String toCSV() {
-    return transactionId + "," + date + "," + customer.getCustomerId() + "," + calculateFinalAmount();
+        return transactionId + "," + date + "," + customer.getCustomerID() + "," + calculateFinalAmount();
     }
 }
