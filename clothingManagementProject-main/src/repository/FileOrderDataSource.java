@@ -33,7 +33,7 @@ public class FileOrderDataSource {
                 
                 Customer foundCustomer = null;
                 for (Customer c : customers) {
-                    if (c.getCustomerId() == customerId) {
+                    if (c.getCustomerID() == customerId) {
                         foundCustomer = c;
                         break;
                     }
