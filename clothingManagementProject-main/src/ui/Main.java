@@ -79,7 +79,7 @@ public class Main {
             System.err.println("Cannot start application: " + ex.getMessage());
         }
     }
-
+    // Main Menu
     private void run() {
         while (true) {
             System.out.println("\n===== CLOTHING STORE MANAGEMENT =====");
@@ -119,6 +119,7 @@ public class Main {
         }
     }
 
+    // Sub Menu
     private void productMenu() {
         while (true) {
             System.out.println("\n===== MANAGE PRODUCTS =====");
@@ -229,7 +230,7 @@ public class Main {
             }
         }
     }
-
+    
     private void inventoryMenu() {
         while (true) {
             System.out.println("\n===== INVENTORY MANAGEMENT =====");
@@ -257,37 +258,6 @@ public class Main {
             } catch (Exception ex) {
                 System.out.println("Operation failed: " + ex.getMessage());
             }
-        }
-    }
-
-    private void printLowStockProducts() {
-        boolean found = false;
-        for (Product product : productService.getAllProducts()) {
-            if (product.isLowStock()) {
-                System.out.println(product);
-                found = true;
-            }
-        }
-        if (!found) {
-            System.out.println("No low-stock products.");
-        }
-    }
-
-    private void adjustProductStock() throws Exception {
-        String productId = DataInput.getString("Product ID: ").trim();
-        Optional<Product> product = productService.findById(productId);
-        if (!product.isPresent()) {
-            System.out.println("Product not found.");
-            return;
-        }
-
-        int quantity = DataInput.getIntegerNumber("New stock quantity: ");
-        product.get().setQuantity(quantity);
-        if (productService.updateProduct(product.get())) {
-            productService.saveProductsToFile();
-            System.out.println("Stock updated and saved.");
-        } else {
-            System.out.println("Could not update stock.");
         }
     }
 
@@ -321,6 +291,8 @@ public class Main {
         }
     }
 
+
+    // 3. Sale Management functions
     private void createSale() throws Exception {
         String transactionId = DataInput.getString("Transaction ID: ").trim();
         if (orderRepository.findById(transactionId) != null) {
@@ -370,7 +342,41 @@ public class Main {
                     order.getCustomer().getCustomerID(), order.calculateFinalAmount());
         }
     }
+   
+    // 4. Inventory Management
+    private void printLowStockProducts() {
+        boolean found = false;
+        for (Product product : productService.getAllProducts()) {
+            if (product.isLowStock()) {
+                System.out.println(product);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No low-stock products.");
+        }
+    }
 
+    private void adjustProductStock() throws Exception {
+        String productId = DataInput.getString("Product ID: ").trim();
+        Optional<Product> product = productService.findById(productId);
+        if (!product.isPresent()) {
+            System.out.println("Product not found.");
+            return;
+        }
+
+        int quantity = DataInput.getIntegerNumber("New stock quantity: ");
+        product.get().setQuantity(quantity);
+        if (productService.updateProduct(product.get())) {
+            productService.saveProductsToFile();
+            System.out.println("Stock updated and saved.");
+        } else {
+            System.out.println("Could not update stock.");
+        }
+    }
+
+
+    // 5. Report Management
     private void monthlyRevenueReport() throws Exception {
         int month = DataInput.getIntegerNumber("Month (1-12): ");
         int year = DataInput.getIntegerNumber("Year: ");
@@ -401,9 +407,11 @@ public class Main {
         }
     }
 
+    // Save Data when closing main program
     private void saveAllData() throws Exception {
         customerService.saveCustomersToFile();
         productService.saveProductsToFile();
         System.out.println("Customers and products saved.");
     }
+
 }
